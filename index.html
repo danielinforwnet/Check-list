@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checklist de Materiais</title>
+
+  <!-- Manifesto PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2" />
+
+  <!-- Estilo -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      color: #1976d2;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .checklist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .item {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: calc(50% - 15px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .item input[type="number"] {
+      width: 60px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #125a9c;
+    }
+    .history {
+      margin-top: 30px;
+    }
+    .history-item {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    img.preview {
+      max-width: 150px;
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Checklist de Materiais</h1>
+
+  <label>Nome do Técnico:
+    <input type="text" id="tecnico" placeholder="Digite o nome do técnico">
+  </label>
+
+  <label>Data:
+    <input type="date" id="data">
+  </label>
+
+  <label>Adicionar Foto:
+    <input type="file" id="foto" accept="image/*">
+    <img id="preview" class="preview" src="">
+  </label>
+
+  <div class="checklist" id="checklist">
+    <!-- Itens são adicionados via JS -->
+  </div>
+
+  <button onclick="gerarPDF()">Finalizar e Gerar PDF</button>
+  <button onclick="verHistorico()">Ver Histórico</button>
+
+  <div class="history" id="historico"></div>
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const itensMateriais = [
+      "Power Miter", "Laser", "Alic. Corte", "Alic. Universal", "Martelo",
+      "Chaves Fenda e Philips", "Cone de Sinalização", "Esc. Alum. 7",
+      "Escada 6M/7M", "Drop", "Cabo de Rede", "Arame de Espinar",
+      "Pat. Cord Fast/Giga", "Patch Cord Fibra", "Alic. Crimpador",
+      "Testador de Rede", "Detector de Tensão", "Estilete", "Canela Piloto",
+      "Decapador de Fibra", "Power Meter", "Canela Laser", "Clivador",
+      "Gabaritos", "Fixa Fio 5/7mm", "Acoplador", "Adesivo ONU/Roteador",
+      "Conector APC/UPC", "Conector RJ45", "Roteador", "ONU", "ONT",
+      "Fonte POE Fast/Giga", "Switch F/G/PAC", "EPIs (Cinto, Capacete, Talabarte, Bota)",
+      "Crachá", "Fita Isolante/Auto Fusão"
+    ];
+
+    const checklistContainer = document.getElementById('checklist');
+
+    itensMateriais.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <input type="checkbox">
+        <label>${item}</label>
+        <input type="number" min="0" value="0">
+      `;
+      checklistContainer.appendChild(div);
+    });
+
+    document.getElementById('foto').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          document.getElementById('preview').src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    async function gerarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const nome = document.getElementById('tecnico').value;
+      const data = document.getElementById('data').value;
+      const foto = document.getElementById('preview').src;
+
+      if (!nome || !data) {
+        alert('Por favor, preencha o nome do técnico e a data.');
+        return;
+      }
+
+      doc.text(`Checklist de Materiais`, 10, 10);
+      doc.text(`Técnico: ${nome}`, 10, 20);
+      doc.text(`Data: ${data}`, 10, 30);
+
+      if (foto) {
+        doc.addImage(foto, 'JPEG', 140, 10, 50, 50);
+      }
+
+      let y = 50;
+      const checklist = document.querySelectorAll('.item');
+      const resultado = [];
+
+      checklist.forEach(item => {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        const quantidade = item.querySelector('input[type="number"]').value;
+        const label = item.querySelector('label').textContent.trim();
+        const status = checkbox.checked ? '✔' : '❌';
+
+        resultado.push({ item: label, status, quantidade });
+
+        doc.text(`${status} ${label} - Quant.: ${quantidade}`, 10, y);
+        y += 7;
+        if (y > 280) {
+          doc.addPage();
+          y = 10;
+        }
+      });
+
+      // Salvar no histórico
+      const historico = JSON.parse(localStorage.getItem('checklistHistorico') || '[]');
+      historico.push({ tecnico: nome, data: data, itens: resultado, foto: foto });
+      localStorage.setItem('checklistHistorico', JSON.stringify(historico));
+
+      doc.save(`checklist_${nome}_${data}.pdf`);
+      alert("Checklist salvo e PDF gerado.");
+    }
+
+    function verHistorico() {
+      const historicoDiv = document.getElementById('historico');
+      historicoDiv.innerHTML = "<h2>Histórico</h2>";
+
+      const historico = JSON.parse(localStorage.getItem('checklistHistorico') || '[]');
+      if (historico.length === 0) {
+        historicoDiv.innerHTML += "<p>Nenhum checklist salvo ainda.</p>";
+        return;
+      }
+
+      historico.forEach(reg => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <strong>${reg.tecnico}</strong> - ${reg.data}<br>
+          ${reg.itens.map(item => `${item.status} ${item.item} (Qtd: ${item.quantidade})`).join('<br>')}
+          ${reg.foto ? `<br><img src="${reg.foto}" class="preview">` : ''}
+        `;
+        historicoDiv.appendChild(div);
+      });
+    }
+  </script>
+
+  <!-- Service Worker para PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrado com sucesso!'))
+        .catch(err => console.log('Erro no Service Worker', err));
+    }
+  </script>
+</body>
+</html>
