@@ -104,6 +104,7 @@
         <div class="checklist" id="checklist"></div>
 
         <button onclick="gerarPDF()">Finalizar e Gerar PDF</button>
+        <button onclick="enviarWhatsApp()">Enviar para WhatsApp</button>
         <button onclick="verHistorico()">Ver Histórico</button>
 
         <div class="history" id="historico"></div>
@@ -220,6 +221,35 @@
                 alert("Erro ao salvar no Firebase. Verifique sua conexão ou permissões.");
             }
         };
+
+     window.enviarWhatsApp = function () {
+    const nome = document.getElementById('tecnico').value;
+    const data = document.getElementById('data').value;
+    if (!nome || !data) {
+        alert('Preencha o nome do técnico e a data antes de enviar para o WhatsApp.');
+        return;
+    }
+    let mensagem = `Checklist de Materiais%0A`;
+    mensagem += `Técnico: ${nome}%0A`;
+    mensagem += `Data: ${data}%0A%0A`;
+    const checklist = document.querySelectorAll('.item');
+    checklist.forEach(item => {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        const quantidade = item.querySelector('input[type="number"]').value;
+        const label = item.querySelector('label').textContent.trim();
+        const status = checkbox.checked ? '✔' : '❌';
+        mensagem += `${status} ${label} - Quant.: ${quantidade}%0A`;
+    });
+
+    // Detectar se é celular
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const url = isMobile
+        ? `whatsapp://send?text=${mensagem}`
+        : `https://wa.me/?text=${mensagem}`;
+
+    window.open(url, '_blank');
+};
+
 
         window.verHistorico = async function () {
             const historicoDiv = document.getElementById('historico');
