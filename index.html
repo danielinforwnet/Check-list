@@ -5,109 +5,442 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1976d2" />
-    <title>Checklist de Materiais</title>
+    <meta name="theme-color" content="#00d4ff" />
+    <title>Checklist de Materiais - Fibra Óptica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f5f5;
+        * { 
+            box-sizing: border-box; 
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 0;
         }
-        h1, h2 { color: #1976d2; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select {
-            padding: 8px;
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 35%, #16213e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animação de fibras ópticas no fundo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 400px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 157, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 0, 150, 0.05) 0%, transparent 50%);
+            z-index: -2;
         }
-        .checklist {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
+
+        /* Linhas de fibra óptica animadas */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 212, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(0, 255, 157, 0.05) 50%, transparent 51%);
+            background-size: 100px 100px, 150px 150px;
+            animation: fiber-move 20s linear infinite;
+            z-index: -1;
         }
-        .item {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            width: calc(50% - 15px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+
+        @keyframes fiber-move {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
         }
-        .item input[type="number"] { width: 60px; }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
-        button:hover { background-color: #125a9c; }
-        .history { margin-top: 30px; }
-        .history-item {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        h1, h2 { 
+            background: linear-gradient(135deg, #00d4ff 0%, #00ff9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            text-align: center;
             margin-bottom: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-        img.preview { max-width: 150px; display: block; margin-top: 10px; }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        /* Cards e containers */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Login */
         #login-container {
             max-width: 400px;
-            margin: auto;
+            margin: 100px auto;
             text-align: center;
-            margin-top: 100px;
+        }
+
+        /* Form inputs */
+        label { 
+            display: block; 
+            margin: 20px 0 8px 0;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            padding: 12px 16px;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Checklist grid */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .item:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .item:hover::before {
+            left: 100%;
+        }
+
+        .item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            accent-color: #00d4ff;
+        }
+
+        .item label {
+            flex: 1;
+            margin: 0;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .item input[type="number"] { 
+            width: 70px;
+            padding: 8px;
+            text-align: center;
+            margin: 0;
+        }
+
+        /* Buttons */
+        button {
+            padding: 14px 28px;
+            margin: 10px 8px;
+            background: linear-gradient(135deg, #00d4ff 0%, #00ff9d 100%);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ff4757 0%, #ff6b7d 100%);
+            color: white;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        /* Photo preview */
+        img.preview { 
+            max-width: 150px; 
+            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        /* History */
+        .history { 
+            margin-top: 40px; 
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            border-color: #00ff9d;
+            box-shadow: 0 4px 20px rgba(0, 255, 157, 0.2);
+        }
+
+        /* Action buttons container */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+            
+            .item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .item input[type="number"] {
+                width: 100px;
+                align-self: center;
+            }
+            
+            .logout-btn {
+                position: static;
+                margin: 0 auto 20px auto;
+                display: block;
+                width: fit-content;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes loading {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: loading 1s ease-in-out infinite;
+            margin-left: 10px;
         }
     </style>
 </head>
 
 <body>
-    <!-- LOGIN -->
-    <div id="login-container">
-        <h2>Login</h2>
-        <input type="email" id="email" placeholder="Email"><br>
-        <input type="password" id="senha" placeholder="Senha"><br>
-        <button onclick="login()">Entrar</button>
-        <button onclick="registrar()">Registrar</button>
-    </div>
+    <div class="container">
+        <!-- LOGIN -->
+        <div id="login-container" class="card">
+            <h2>🌐 Acesso ao Sistema</h2>
+            <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">Sistema de Checklist para Técnicos em Fibra Óptica</p>
+            <input type="email" id="email" placeholder="Digite seu email">
+            <input type="password" id="senha" placeholder="Digite sua senha">
+            <div class="actions">
+                <button onclick="login()">Entrar</button>
+                <button onclick="registrar()">Registrar</button>
+            </div>
+        </div>
 
-    <!-- APP -->
-    <div id="app-container" style="display:none;">
-        <h1>Checklist de Materiais</h1>
-        <button onclick="logout()">Sair</button>
+        <!-- APP -->
+        <div id="app-container" style="display:none;">
+            <button class="logout-btn" onclick="logout()">Sair</button>
+            
+            <div class="header">
+                <h1>📡 Checklist de Materiais</h1>
+                <p style="color: rgba(255,255,255,0.8); font-size: 18px;">Sistema de Controle para Técnicos em Fibra Óptica</p>
+            </div>
 
-        <label>Nome do Técnico:
-            <input type="text" id="tecnico" placeholder="Digite o nome do técnico">
-        </label>
+            <div class="card">
+                <h2>📋 Informações do Técnico</h2>
+                
+                <label>👤 Nome do Técnico:</label>
+                <input type="text" id="tecnico" placeholder="Digite o nome do técnico responsável">
 
-        <label>Data:
-            <input type="date" id="data">
-        </label>
+                <label>📅 Data da Inspeção:</label>
+                <input type="date" id="data">
 
-        <label>Adicionar Foto:
-            <input type="file" id="foto" accept="image/*">
-            <img id="preview" class="preview" src="">
-        </label>
+                <label>📸 Foto do Local/Equipamentos:</label>
+                <input type="file" id="foto" accept="image/*">
+                <img id="preview" class="preview" src="" style="display: none;">
+            </div>
 
-        <div class="checklist" id="checklist"></div>
+            <div class="card">
+                <h2>🔧 Lista de Materiais e Ferramentas</h2>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">
+                    Marque os itens presentes e informe a quantidade disponível
+                </p>
+                <div class="checklist" id="checklist"></div>
+            </div>
 
-        <button onclick="gerarPDF()">Finalizar e Gerar PDF</button>
-        <button onclick="enviarWhatsApp()">Enviar para WhatsApp</button>
-        <button onclick="verHistorico()">Ver Histórico</button>
+            <div class="actions">
+                <button onclick="gerarPDF()">📄 Gerar Relatório PDF</button>
+                <button onclick="enviarWhatsApp()">💬 Enviar WhatsApp</button>
+                <button onclick="verHistorico()">📊 Ver Histórico</button>
+            </div>
 
-        <div class="history" id="historico"></div>
+            <div class="history" id="historico"></div>
+        </div>
     </div>
 
     <!-- jsPDF -->
@@ -152,164 +485,375 @@
             const div = document.createElement('div');
             div.className = 'item';
             div.innerHTML = `
-                <input type="checkbox">
-                <label>${item}</label>
-                <input type="number" min="0" value="0">
+                <input type="checkbox" id="check_${item}">
+                <label for="check_${item}">${item}</label>
+                <input type="number" min="0" value="0" placeholder="Qtd">
             `;
             checklistContainer.appendChild(div);
         });
 
         document.getElementById('foto').addEventListener('change', function (e) {
             const file = e.target.files[0];
+            const preview = document.getElementById('preview');
             if (file) {
                 const reader = new FileReader();
-                reader.onload = evt => document.getElementById('preview').src = evt.target.result;
+                reader.onload = evt => {
+                    preview.src = evt.target.result;
+                    preview.style.display = 'block';
+                };
                 reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
             }
         });
 
         window.gerarPDF = async function () {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            const nome = document.getElementById('tecnico').value;
-            const data = document.getElementById('data').value;
-            const foto = document.getElementById('preview').src;
-
-            if (!nome || !data) {
-                alert('Por favor, preencha o nome do técnico e a data.');
-                return;
-            }
-
-            if (!auth.currentUser) {
-                alert('Você precisa estar logado para salvar o checklist.');
-                return;
-            }
-
-            doc.text(`Checklist de Materiais`, 10, 10);
-            doc.text(`Técnico: ${nome}`, 10, 20);
-            doc.text(`Data: ${data}`, 10, 30);
-            if (foto) doc.addImage(foto, 'JPEG', 140, 10, 50, 50);
-
-            let y = 50;
-            const checklist = document.querySelectorAll('.item');
-            const resultado = [];
-            checklist.forEach(item => {
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                const quantidade = item.querySelector('input[type="number"]').value;
-                const label = item.querySelector('label').textContent.trim();
-                const status = checkbox.checked ? '✔' : '❌';
-                resultado.push({ item: label, status, quantidade });
-                doc.text(`${status} ${label} - Quant.: ${quantidade}`, 10, y);
-                y += 7;
-                if (y > 280) { doc.addPage(); y = 10; }
-            });
+            const button = event.target;
+            const originalText = button.textContent;
+            button.innerHTML = '📄 Gerando...<span class="loading"></span>';
+            button.disabled = true;
 
             try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const nome = document.getElementById('tecnico').value;
+                const data = document.getElementById('data').value;
+                const foto = document.getElementById('preview').src;
+
+                if (!nome || !data) {
+                    alert('Por favor, preencha o nome do técnico e a data.');
+                    return;
+                }
+
+                if (!auth.currentUser) {
+                    alert('Você precisa estar logado para salvar o checklist.');
+                    return;
+                }
+
+                // === CABEÇALHO PROFISSIONAL ===
+                // Fundo azul para o cabeçalho
+                doc.setFillColor(0, 51, 102); // Azul escuro
+                doc.rect(0, 0, 210, 35, 'F');
+
+                // Título principal
+                doc.setTextColor(255, 255, 255); // Branco
+                doc.setFontSize(18);
+                doc.setFont(undefined, 'bold');
+                doc.text('CHECKLIST DE MATERIAIS', 105, 15, { align: 'center' });
+                
+                doc.setFontSize(14);
+                doc.text('TÉCNICO EM FIBRA ÓPTICA', 105, 25, { align: 'center' });
+
+                // === INFORMAÇÕES DO TÉCNICO ===
+                doc.setTextColor(0, 0, 0); // Preto
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                
+                // Caixa para informações
+                doc.setDrawColor(0, 51, 102);
+                doc.setLineWidth(0.5);
+                doc.rect(10, 40, 120, 25);
+                
+                doc.text('INFORMAÇÕES DO TÉCNICO:', 12, 50);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Nome: ${nome}`, 12, 58);
+                
+                // Formatação da data
+                const dataFormatada = new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+                doc.text(`Data da Inspeção: ${dataFormatada}`, 12, 66);
+
+                // Foto (se houver)
+                if (foto && foto !== '') {
+                    try {
+                        doc.addImage(foto, 'JPEG', 140, 40, 60, 45);
+                        doc.rect(140, 40, 60, 45);
+                    } catch (e) {
+                        console.warn('Erro ao adicionar imagem:', e);
+                    }
+                }
+
+                // === RESUMO EXECUTIVO ===
+                const checklist = document.querySelectorAll('.item');
+                const resultado = [];
+                let itensPresentes = 0;
+                let totalItens = 0;
+                let quantidadeTotal = 0;
+
+                checklist.forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    const quantidade = parseInt(item.querySelector('input[type="number"]').value) || 0;
+                    const label = item.querySelector('label').textContent.trim();
+                    const status = checkbox.checked ? '✓' : '✗';
+                    
+                    resultado.push({ item: label, status, quantidade, presente: checkbox.checked });
+                    totalItens++;
+                    if (checkbox.checked) itensPresentes++;
+                    quantidadeTotal += quantidade;
+                });
+
+                // Caixa de resumo
+                doc.setFillColor(240, 248, 255); // Azul claro
+                doc.rect(10, 95, 190, 20, 'F');
+                doc.setDrawColor(0, 51, 102);
+                doc.rect(10, 95, 190, 20);
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(11);
+                doc.text('RESUMO EXECUTIVO', 12, 105);
+                doc.setFont(undefined, 'normal');
+                doc.setFontSize(10);
+                doc.text(`Itens Presentes: ${itensPresentes}/${totalItens} (${Math.round((itensPresentes/totalItens)*100)}%)`, 12, 112);
+                doc.text(`Quantidade Total: ${quantidadeTotal} unidades`, 100, 112);
+
+                // === LISTA DETALHADA ===
+                let y = 130;
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text('LISTA DETALHADA DE MATERIAIS E FERRAMENTAS', 12, y);
+                y += 10;
+
+                // Cabeçalho da tabela
+                doc.setFillColor(0, 51, 102);
+                doc.rect(10, y, 190, 8, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'bold');
+                doc.text('STATUS', 15, y + 6);
+                doc.text('MATERIAL/FERRAMENTA', 35, y + 6);
+                doc.text('QUANTIDADE', 170, y + 6);
+                y += 8;
+
+                // Linhas da tabela
+                doc.setTextColor(0, 0, 0);
+                doc.setFont(undefined, 'normal');
+                doc.setFontSize(8);
+
+                resultado.forEach((item, index) => {
+                    // Alternância de cores nas linhas
+                    if (index % 2 === 0) {
+                        doc.setFillColor(248, 249, 250);
+                        doc.rect(10, y, 190, 6, 'F');
+                    }
+
+                    // Cor do status
+                    if (item.presente) {
+                        doc.setTextColor(0, 128, 0); // Verde
+                        doc.text('✓', 15, y + 4);
+                    } else {
+                        doc.setTextColor(255, 0, 0); // Vermelho  
+                        doc.text('✗', 15, y + 4);
+                    }
+
+                    // Nome do item
+                    doc.setTextColor(0, 0, 0);
+                    const nomeItem = item.item.length > 50 ? item.item.substring(0, 47) + '...' : item.item;
+                    doc.text(nomeItem, 35, y + 4);
+
+                    // Quantidade
+                    doc.setTextColor(0, 51, 102);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(item.quantidade.toString(), 175, y + 4);
+                    doc.setFont(undefined, 'normal');
+
+                    // Linha separadora
+                    doc.setDrawColor(200, 200, 200);
+                    doc.setLineWidth(0.1);
+                    doc.line(10, y + 6, 200, y + 6);
+
+                    y += 6;
+
+                    // Nova página se necessário
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                        
+                        // Repetir cabeçalho da tabela na nova página
+                        doc.setFillColor(0, 51, 102);
+                        doc.rect(10, y, 190, 8, 'F');
+                        doc.setTextColor(255, 255, 255);
+                        doc.setFontSize(9);
+                        doc.setFont(undefined, 'bold');
+                        doc.text('STATUS', 15, y + 6);
+                        doc.text('MATERIAL/FERRAMENTA', 35, y + 6);
+                        doc.text('QUANTIDADE', 170, y + 6);
+                        y += 8;
+                        
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFont(undefined, 'normal');
+                        doc.setFontSize(8);
+                    }
+                });
+
+                // === RODAPÉ ===
+                const totalPages = doc.getNumberOfPages();
+                for (let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    
+                    // Linha do rodapé
+                    doc.setDrawColor(0, 51, 102);
+                    doc.setLineWidth(0.5);
+                    doc.line(10, 285, 200, 285);
+                    
+                    // Texto do rodapé
+                    doc.setFontSize(8);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text('Sistema de Checklist para Técnicos em Fibra Óptica', 10, 292);
+                    doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 10, 297);
+                    doc.text(`Página ${i} de ${totalPages}`, 180, 292);
+                }
+
+                // Salvar no Firebase
                 await addDoc(collection(db, "checklists"), {
                     tecnico: nome,
                     data: data,
                     itens: resultado,
                     foto: foto,
                     user: auth.currentUser.uid,
-                    criadoEm: new Date()
+                    criadoEm: new Date(),
+                    resumo: {
+                        itensPresentes,
+                        totalItens,
+                        quantidadeTotal,
+                        percentualCompleto: Math.round((itensPresentes/totalItens)*100)
+                    }
                 });
+                
                 doc.save(`checklist_${nome}_${data}.pdf`);
-                alert("Checklist salvo no Firebase e PDF gerado!");
+                alert("✅ Checklist salvo no sistema e PDF profissional gerado com sucesso!");
+                
             } catch (e) {
                 console.error("Erro ao salvar no Firestore:", e);
-                alert("Erro ao salvar no Firebase. Verifique sua conexão ou permissões.");
+                alert("❌ Erro ao salvar no Firebase. Verifique sua conexão.");
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
             }
         };
 
-     window.enviarWhatsApp = function () {
-    const nome = document.getElementById('tecnico').value;
-    const data = document.getElementById('data').value;
-    if (!nome || !data) {
-        alert('Preencha o nome do técnico e a data antes de enviar para o WhatsApp.');
-        return;
-    }
-    let mensagem = `Checklist de Materiais%0A`;
-    mensagem += `Técnico: ${nome}%0A`;
-    mensagem += `Data: ${data}%0A%0A`;
-    const checklist = document.querySelectorAll('.item');
-    checklist.forEach(item => {
-        const checkbox = item.querySelector('input[type="checkbox"]');
-        const quantidade = item.querySelector('input[type="number"]').value;
-        const label = item.querySelector('label').textContent.trim();
-        const status = checkbox.checked ? '✔' : '❌';
-        mensagem += `${status} ${label} - Quant.: ${quantidade}%0A`;
-    });
+        window.enviarWhatsApp = function () {
+            const nome = document.getElementById('tecnico').value;
+            const data = document.getElementById('data').value;
+            if (!nome || !data) {
+                alert('Preencha o nome do técnico e a data antes de enviar para o WhatsApp.');
+                return;
+            }
+            let mensagem = `📡 *CHECKLIST DE MATERIAIS - FIBRA ÓPTICA*%0A%0A`;
+            mensagem += `👤 *Técnico:* ${nome}%0A`;
+            mensagem += `📅 *Data:* ${data}%0A%0A`;
+            mensagem += `🔧 *MATERIAIS E FERRAMENTAS:*%0A%0A`;
+            
+            const checklist = document.querySelectorAll('.item');
+            checklist.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const quantidade = item.querySelector('input[type="number"]').value;
+                const label = item.querySelector('label').textContent.trim();
+                const status = checkbox.checked ? '✅' : '❌';
+                mensagem += `${status} ${label} - *Qtd:* ${quantidade}%0A`;
+            });
 
-    // Detectar se é celular
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const url = isMobile
-        ? `whatsapp://send?text=${mensagem}`
-        : `https://wa.me/?text=${mensagem}`;
+            mensagem += `%0A_Relatório gerado pelo Sistema de Checklist_`;
 
-    window.open(url, '_blank');
-};
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const url = isMobile
+                ? `whatsapp://send?text=${mensagem}`
+                : `https://wa.me/?text=${mensagem}`;
 
+            window.open(url, '_blank');
+        };
 
         window.verHistorico = async function () {
             const historicoDiv = document.getElementById('historico');
-            historicoDiv.innerHTML = "<h2>Histórico</h2>";
+            historicoDiv.innerHTML = "<div class='card'><h2>📊 Histórico de Checklists</h2></div>";
+            
             if (!auth.currentUser) {
-                historicoDiv.innerHTML += "<p>Você precisa estar logado para ver o histórico.</p>";
+                historicoDiv.innerHTML += "<div class='card'><p>🔒 Você precisa estar logado para ver o histórico.</p></div>";
                 return;
             }
+            
             try {
                 const q = query(collection(db, "checklists"), where("user", "==", auth.currentUser.uid));
                 const querySnapshot = await getDocs(q);
+                
                 if (querySnapshot.empty) {
-                    historicoDiv.innerHTML += "<p>Nenhum checklist salvo ainda.</p>";
+                    historicoDiv.innerHTML += "<div class='card'><p>📋 Nenhum checklist encontrado ainda.</p></div>";
                     return;
                 }
+                
                 querySnapshot.forEach(docSnap => {
                     const reg = docSnap.data();
                     const div = document.createElement('div');
                     div.className = 'history-item';
                     div.innerHTML = `
-                        <strong>${reg.tecnico}</strong> - ${reg.data}<br>
-                        ${reg.itens.map(item => `${item.status} ${item.item} (Qtd: ${item.quantidade})`).join('<br>')}
-                        ${reg.foto ? `<br><img src="${reg.foto}" class="preview">` : ''}
+                        <h3 style="color: #00d4ff; margin-bottom: 10px;">👤 ${reg.tecnico} - 📅 ${reg.data}</h3>
+                        <div style="margin-bottom: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+                            ${reg.itens.filter(item => item.status === '✓' || item.status === '✔').length} itens confirmados de ${reg.itens.length} total
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; margin-top: 15px;">
+                            ${reg.itens.map(item => `
+                                <div style="font-size: 13px; padding: 4px 0;">
+                                    ${item.status} ${item.item} <span style="color: #00ff9d;">(${item.quantidade})</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${reg.foto ? `<img src="${reg.foto}" class="preview" style="margin-top: 15px;">` : ''}
                     `;
                     historicoDiv.appendChild(div);
                 });
             } catch (e) {
-                alert("Erro ao carregar histórico: " + e.message);
+                historicoDiv.innerHTML += "<div class='card'><p>❌ Erro ao carregar histórico: " + e.message + "</p></div>";
             }
         };
 
         window.login = async function () {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
+            
+            if (!email || !senha) {
+                alert("Por favor, preencha email e senha.");
+                return;
+            }
+            
             try {
                 await signInWithEmailAndPassword(auth, email, senha);
-                alert("Login realizado!");
+                alert("✅ Login realizado com sucesso!");
             } catch (e) {
-                alert("Erro no login: " + e.message);
+                alert("❌ Erro no login: " + e.message);
             }
         };
+
         window.registrar = async function () {
             const email = document.getElementById("email").value;
             const senha = document.getElementById("senha").value;
+            
+            if (!email || !senha) {
+                alert("Por favor, preencha email e senha.");
+                return;
+            }
+            
+            if (senha.length < 6) {
+                alert("A senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
+            
             try {
                 await createUserWithEmailAndPassword(auth, email, senha);
-                alert("Usuário registrado!");
+                alert("✅ Usuário registrado com sucesso!");
             } catch (e) {
-                alert("Erro no registro: " + e.message);
+                alert("❌ Erro no registro: " + e.message);
             }
         };
+
         window.logout = async function () {
             await signOut(auth);
-            alert("Saiu da conta!");
+            alert("👋 Sessão encerrada!");
         };
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById("login-container").style.display = "none";
                 document.getElementById("app-container").style.display = "block";
+                document.getElementById('data').value = new Date().toISOString().split('T')[0];
             } else {
                 document.getElementById("login-container").style.display = "block";
                 document.getElementById("app-container").style.display = "none";
